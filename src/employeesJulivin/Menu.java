@@ -3,6 +3,7 @@ package employeesJulivin;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Scanner;
    
@@ -41,48 +42,58 @@ import java.util.Scanner;
 	        	   choice = getNextIntFromUser(); 
 	          }
 	          else if (choice == 1) {
+	        	  boolean yes = true;
+	        	  while(yes) {
 	        	  try {
 	        	  System.out.println("Please enter your ID.");
-	        	  int ID = getNextIntFromUser();
+	        	  int ID = getNextIntFromUser(); 
 	        	  timer.timeIn(ID);
-	        	 // System.out.println("Done.You have just time in");
-	        	  choice = getNextIntFromUser();
-	        	  } catch(Exception e)
+	        	
+	        	  choice = getNextIntFromUser(); 
+	        	  
+	        	  yes = false; 
+	        	 } catch(Exception e) 
 			      {System.out.println("Invalid input.");
 			     scanner.next();
 			     } 
 	          }
-	          
+	       }
 	          else if (choice == 2) {
-	        	  try {
+	        	  boolean yes = true;
+	        	  while(yes) {
+	        	 try {
 	        	  System.out.println("Please enter your ID.");
 	        	  int ID = getNextIntFromUser();
 	        	  timer.timeOutTimeElapsed(ID);
 	        	  System.out.println("Done.You have just time out");
 	        	  choice = getNextIntFromUser();
+	        	  yes = false;
 	          } catch(Exception e)
-		      {System.out.println("Invalid input.");
+		      {System.out.println("Invalid input."); 
 		     scanner.next();
 		     } 
-	          } 
+	          }
+	          }
 	          else if (choice == 3) {
 	        	  timer.listPersons1();
 	        	  choice = getNextIntFromUser();
 	          }
 	          else if (choice == 4) {
+	        	  //boolean yes = true;
+	        	 // while(yes) {
 	        	  try {
 	        	  System.out.println("Please enter your ID.");
 	        	  int ID = getNextIntFromUser();
-	        	 // System.out.println("Please enter the month, year.");
-	        	//  String nameYear = getNextStringLineFromUser();
+	        	 
 	        	  timer.printTimeCard(ID);
 	        	  choice = getNextIntFromUser();
+	        	 // yes = false;
 	          } catch(Exception e)
 		      {System.out.println("Invalid input.");
 		     scanner.next();
-		     } 
+		     }  
 	          }
-	         
+	        //  }
 	       else if (choice == 100) {
 	    	   try {
 	    	   System.out.println("Please enter the ID of the employee to add more time at work.");
@@ -99,7 +110,7 @@ import java.util.Scanner;
 	       }  
 	       else if (choice == 101) {
 	    	   try {
-	    	   System.out.println("Please enter the ID of the employee to add one absence.");
+	    	   System.out.println("Please enter the ID of the employee to add one absent.");
 	    	   int ID = getNextIntFromUser();
 	          timer.addToAbsences(ID);
 	          System.out.println("Done.You have just add one absent to employee no. " + ID);
@@ -113,7 +124,7 @@ import java.util.Scanner;
 	    	   try {
 	    	   System.out.println("Please enter the time."); 
 	        	  BigDecimal time =getNextBigDecimalFromUser();
-	          timer.setTotalTimeToWorkPerDay(time);
+	          timer.setTotalTimeToWorkPerDayForAll(time);
 	          System.out.println("Done.You have just add total time work per day to all employees. ");
 	          choice = getNextIntFromUser();
 	       } catch(Exception e)
@@ -151,7 +162,9 @@ import java.util.Scanner;
 	    	   try {
 	    	   System.out.println("Please enter the ttwpd."); 
 	        	  BigDecimal ttwd =getNextBigDecimalFromUser();
-	          timer.setTotalTimeToWorkPerDay(ttwd);
+	        	  System.out.println("Please enter the ID of the employee to set ttwd.");
+	        	  int ID = getNextIntFromUser(); 
+	          timer.setTotalTimeToWorkPerDayForOne(ttwd, ID);
 	          System.out.println("Done.You have just set the ttwpd for all employees");
         	  choice = getNextIntFromUser();
 	       } catch(Exception e)
@@ -228,20 +241,90 @@ import java.util.Scanner;
 	          choice = getNextIntFromUser();
 	    		   } catch(Exception e)
 	 		      {System.out.println("Invalid input.");
+	 		     scanner.next(); 
+	 		     } 
+	    	   }
+	    	   else if (choice == 112) {
+	    		   try {
+	    		   System.out.println("Please enter the ID of the employee to set time 7:15 for Time In.");
+		        	  int ID = getNextIntFromUser();
+	    		   timer.setTimeToTimeIn( ID);
+	    		   System.out.println("Done.You have just  set time 7:15 for Time In for employee no. " + ID);
+	    		   choice = getNextIntFromUser();
+	    		   } catch(Exception e)
+	 		      {System.out.println("Invalid input.");
 	 		     scanner.next();
 	 		     } 
 	    	   }
+	    	   else if (choice == 113) {
+	    		   try {
+	    		   System.out.println("Please enter the ID of the employee to set time 8:15 for Time In.");
+		        	  int ID = getNextIntFromUser();
+	    		   timer.setTimeToTimeIn1( ID); 
+	    		   System.out.println("Done.You have just  set time 8:15 for Time In for employee no. " + ID);
+	    		   choice = getNextIntFromUser();
+    		   } catch(Exception e)
+ 		      {System.out.println("Invalid input.");
+ 		     scanner.next();
+ 		     }  
+	    	   }
+	    	   else if (choice == 114) {
+	    		   timer.setAbsencesZeroAll(); 
+	    		   System.out.println("Done.You have just  set all absences of all employees to zero.");
+	    		   choice = getNextIntFromUser();
+	    	   }
+	    	   else if (choice == 115) {
+	    		   timer.setTardinessZeroAll();
+	    		   System.out.println("Done.You have just  set all tardiness of all employees to zero.");
+	    		   choice = getNextIntFromUser();
+	    	   }
+	    	   else if (choice == 116) {
+	    		   timer.clearTimecardAll();
+	    		   System.out.println("Done. You have just erase the contents of the time card of all employee.");
+	    		   choice = getNextIntFromUser();
+	    		   
+	    	   }
+	    	   else if (choice == 117) {
+	    		   try {
+	    		   System.out.println("Please enter the ID of the employee to erase the content of timecard.");
+ 	        	  int ID = getNextIntFromUser();
+	    		   timer.clearTimecard(ID);
+	    		   System.out.println("Done. You have just erase the contents of the time card of employee no." + ID);
+	    		   choice = getNextIntFromUser();
+	    		   } catch(Exception e)
+	  		      {System.out.println("Invalid input.");
+	  		     scanner.next();
+	  		      }
+	    	   }
+	    	   else if (choice == 118) {
+	          timer.setTimeAtWorkZeroAll();
+	          System.out.println("Done. You have just erase the time at work of all employee.");
+   		       choice = getNextIntFromUser();
+	    	   }
+   		       else if (choice == 119) {
+   		    	   try {
+   		    	System.out.println("Please enter the ID of the employee to erase the time at work.");
+	        	  int ID = getNextIntFromUser();  
+   		    	timer.setTimeAtWorkZero(ID);
+   		       System.out.println("Done. You have just erase the time at work of employee no." + ID);
+  		        choice = getNextIntFromUser();
+   		    	} catch(Exception e)
+ 	  		      {System.out.println("Invalid input.");
+ 	  		     scanner.next();
+ 	  		      }
+   		       }
+   		    
 	    	   else if (choice == 1000) {
 	    		   timer.printAdminUse();
 	    		   choice = getNextIntFromUser();
 	    	   }
-	    	   else if ((choice < 0 && choice > 5) || !(choice ==1000)){
+	    	   else if ((choice < 0 || choice > 5)&& !(choice < 100 && choice > 119) && !(choice ==1000)){
 	    		   System.out.println("Invalid input.");
 	    	   }
 	       if (choice == 0) {
 	       exit(); 
       	  }  
-  	   } again = false;
+  	   } again = false; 
   	 } catch(Exception e)
 	  {System.out.println("invalid input!");
 	  scanner.next();}
@@ -286,6 +369,7 @@ import java.util.Scanner;
 	 private BigDecimal getNextBigDecimalFromUser() {
 		 return scanner.nextBigDecimal();
 	 }
+	
 	/* private Instant getNextInstantFromUser() {
 		 //Scanner scanner = new Scanner(System.in);
 		// System.out.print("Enter a date and time (in ISO-8601 format "2023-02-21T16:30:00Z"): ");

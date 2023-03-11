@@ -4,12 +4,12 @@ public enum MenuChoices {
 	EXIT(0, "Exit"),
     TIME_IN(1, "Time In"), 
     TIME_OUT(2, "Time out"), 
-    LIST_EMPLOYEES(3, "List Employees"),
+    SHOW_EMPLOYEE_DATA(3, "Show Employee's Info"),
     SHOW_TIMECARD(4, "Show Timecard"),
-    SHOW_EMPLOYEE_DATA(5,"Show Employee's Info");
+    LIST_EMPLOYEES(5,"List Employees");
    
     
-     
+      
 private int id;  
 private String displayValue;
 
