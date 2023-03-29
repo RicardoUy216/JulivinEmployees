@@ -3,7 +3,7 @@ import java.time.Duration;
 import java.time.Instant;
 
 import java.time.LocalTime;
-
+import java.time.format.DateTimeFormatter;
 import java.io.EOFException;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -34,12 +34,19 @@ public class Timer {
 		this.persons = persons;
 		
 	}	
-   
+    public void printLocalTimeIn() {
+    	for (Person p : persons){
+    	p.getTimeIn(); 
+    	 DateTimeFormatter formatter
+    	            = DateTimeFormatter.ISO_LOCAL_TIME;
+    	        String value = presetTime.format(formatter);
+    	       System.out.println(p.getName() + ": " + value);}
+    	}
     public void clearTimecardAll() {
     	for(Person p : persons) { 
     	(p.getArriveLeave()).clear();
     	}
-    }
+    } 
     
     public void clearTimecard(int ID) {
     	Person p = findEmployeeByID(ID);
@@ -47,7 +54,7 @@ public class Timer {
     }
 		public String getShopName() {
 			return shopName;
-		}
+		} 
 
 		public void setShopName(String shopName) {
 			this.shopName = shopName;
@@ -99,15 +106,15 @@ public class Timer {
 		}public void listPersons1() {
 			System.out.println( "ID No.        name                DayOff       TTWPD      Time to Work");
 			for(Person p : persons) {
-				System.out.println(String.format("%2d       %-15s  %15s   %8.1f    %8s", p.getId(),p.getName(),p.getDayOff(),p.getTotalTimeToWork(),timeInOut));
+				System.out.println(String.format("%2d       %-15s  %15s   %8.1f    %8s", p.getId(),p.getName(),p.getDayOff(),p.getTotalTimeToWork(),p.getTimeIn(),timeInOut));
 			}
 		}
 				public void listPersons() {
 					
 			System.out.println( "ID No.    name                   Absences   Tardiness        TimeAtWork   TTWPD        sdf     ");
-			System.out.println( "                                    (this month)              (hours)                         ");
+			System.out.println( "                                    (this month)              (minutes)                         ");
 			for(Person p : persons) {
-				System.out.println(String.format("%2d       %-12s      %12d   %8d   %15.4f  %8.1f    %8.2f", p.getId(),p.getName(),p.getAbsences(),p.getTardiness(), p.getTimeAtWork(),p.getTotalTimeToWork(),p.getSdf()));
+				System.out.println(String.format("%2d       %-12s      %12d   %8d   %15.1f  %8.1f    %8.4f", p.getId(),p.getName(),p.getAbsences(),p.getTardiness(), p.getTimeAtWork(),p.getTotalTimeToWork(),p.getSdf()));
 			}
 		}
 		public void setDayOff(int ID, String day) {
@@ -129,19 +136,26 @@ public class Timer {
 			Date date = new Date(); 
 			Instant start = null;
 		Person p =findEmployeeByID(ID);
-			if( ID == p.getId()) {
-			 start = Instant.now();
+			
+			 start = Instant.now(); 
 			 p.setStart(start);
-			 System.out.println(date.toString());
+			 System.out.println(date.toString().substring(0,20));
+			
 			 if (((date.toString()).substring(0,2)).equalsIgnoreCase((p.getDayOff().substring(0,2)))){
-                 System.out.println("You are not scheduled to work today!!! Please ask the manager for permit to work!");
-                 p.setStart(null);
-			 } else {  p.getArriveLeave().add((date.toString()).substring(0,20));
-             System.out.println("Done.You have just time in");
+                System.out.println(p.getName() + ", you are not scheduled to work today!!! Please ask the manager for permit to work!");
+                p.getArriveLeave().add("No work.");
+                System.out.println("If he says No, Please leave immediately.");
+			 } else if (p.getArriveLeave().size() % 2 == 1) {
+				 p.getArriveLeave().add("No timeOut last time");
+				 System.out.println(p.getName() + ", You have just time in.");
+			 }
+			 else {
+			
+             System.out.println(p.getName() + ", You have just time in.");
                   LocalTime presetTime = p.getTimeIn();
                   LocalTime currentTime = LocalTime.now();
                   Duration elapsedTime = Duration.between(presetTime, currentTime);
-                  Long time =  elapsedTime.toMinutes();
+                  Long time =  elapsedTime.toMinutes(); 
        		      double timehr =(double)(time);
                   // comparison = currentTime.compareTo(presetTime);
                   //if (currentTime.compareTo(presetTime) <= 0) {
@@ -149,23 +163,23 @@ public class Timer {
             System.out.println("Congrats! You are early. Keep it up!");
                    } 
        		      //else if (currentTime.compareTo(presetTime) > 0) {
-       		      else if (timehr > 15 && timehr < 60) {
-            System.out.println("You are late by " + timehr + " minutes, Please come on time next time!");
+       		      else if (timehr > 15 && timehr < 180) {
+            System.out.println( "You are late by " + timehr + " minutes, Please come on time next time!");
             	    p.setTardiness(p.getTardiness() + 1);
             	    System.out.println("Number of Tardiness for this month: " + p.getTardiness());
-            	} else if (timehr > 60 && timehr < 600)
+            	} else if (timehr > 120 && timehr < 600)
             	{ p.setAbsences(p.getAbsences()+1); 
-            	}else { p.setStart(null);
+            	
             	}
-             }
+             } p.getArriveLeave().add((date.toString()).substring(0,20)); 
                    } 
-		                         }
+		                        // }
             
-		public void timeIn1(int ID) {
+		public void timeIn1(int ID) {  
 			Date date = new Date(); 
 			Instant start = null;
-		Person p =findEmployeeByID(ID);
-			if( ID == p.getId()) {
+		Person p =findEmployeeByID(ID); 
+			if( ID == p.getId()) {  
 			 start = Instant.now();
 			 p.setStart(start);
 			 System.out.println(date.toString());
@@ -181,12 +195,17 @@ public class Timer {
 		public void setAbsencesZeroAll() {
 			for (Person p : persons) {
 			p.setAbsences(0);
-			}
+			} 
 		}
 		public void setTardinessZeroAll() {
 			for (Person p : persons) {
 				 p.setTardiness(0);
 			}
+		}
+		public void setSdfAllToZero() {
+			for (Person p : persons) {	
+		p.setSdf(BigDecimal.valueOf(0));
+		}
 		}
 		public void setTimeAtWorkZeroAll() {
 			for (Person p : persons) {
@@ -226,16 +245,15 @@ public class Timer {
 		}
 		public void salDeductionFactorForAll( BigDecimal ndfm) {
 			for (Person p : persons) {
-				//BigDecimal sdf = p.getTimeAtWork().divide(p.getTotalTimeToWork().multiply(ndfm));
-				BigDecimal sdf = p.getTimeAtWork().divide((p.getTotalTimeToWork().multiply(ndfm)), 2, RoundingMode.HALF_UP);
-
-				p.setSdf(sdf);
+				BigDecimal sdf = p.getTimeAtWork().divide((p.getTotalTimeToWork().multiply(ndfm)), 4, RoundingMode.HALF_UP);
+				//BigDecimal sdf = p.getTimeAtWork().divide((p.getTotalTimeToWork().multiply(ndfm)));
+                p.setSdf(sdf);
 			}
 		}
 		public void timeOutTimeElapsed1(int ID) { 
 			Date date = new Date();
-			BigDecimal d = BigDecimal.valueOf(0); 
-		Person p =findEmployeeByID(ID); 
+			BigDecimal d = BigDecimal.valueOf(0);  
+		Person p =findEmployeeByID(ID);  
 			if( ID == p.getId()) {
 			Instant end = Instant.now(); 
 			 p.setEnd(end);
@@ -244,21 +262,17 @@ public class Timer {
 		    Duration timeElapsed = Duration.between(p.getStart(),p.getEnd());
 		       Instant en = p.getEnd();
 		    if (en != null) {
-		    	
-		    
 		     Long time = timeElapsed.toMinutes();
 		     double timehr =(double)(time);
 		     if ((timehr > 780) ||  (timehr <= 0)) {
 		    	 p.addToTimeAtWork(BigDecimal.valueOf(0));
-                         p.setAbsences(p.getAbsences() + 1);
-                     
-		     }else {
+                         p.setAbsences(p.getAbsences() + 1); 
+               }else { 
 		      d = BigDecimal.valueOf(time);
 		      System.out.println("You have worked for a total of " + time + " minutes.");
 		      p.addToTimeAtWork(d);
 		     } } else {
 		    	 System.out.println("Forgot to time out!"); 
-		    	// p.addToTimeAtWork(BigDecimal.valueOf(0));
 		     }
 		     p.getArriveLeave().add((date.toString()).substring(0,20));
 		} 
@@ -270,7 +284,7 @@ public class Timer {
 			if( ID == p.getId()) {
 			Instant end = Instant.now(); 
 			 p.setEnd(end);
-			System.out.println(date.toString());
+			System.out.println(date.toString().substring(0,20));
 			Instant instant =  p.getStart(); // get The current time in instant object
 			Timestamp t=java.sql.Timestamp.from(instant);
 			Timestamp r=java.sql.Timestamp.from(end);
@@ -281,18 +295,20 @@ public class Timer {
 		    if (en != null) {
 		    	Long time = timeElapsed.toMinutes(); 
 		     double timehr =(double)(time);
-		     if (timehr > 780)  {
+		     if (timehr > 840)  {
+		    
 		    	 p.addToTimeAtWork(BigDecimal.valueOf(0));
+		    	 System.out.println(p.getName() + ", you forgot to time in!"); 
+		    	 p.getArriveLeave().add("No time in"); 
 		     }else {
 		      d = BigDecimal.valueOf(time);
-		      System.out.println("You have worked for a total of " + time + " minutes.");
+		      System.out.println(p.getName() + ", you have worked for a total of " + time + " minutes.");
 		      p.addToTimeAtWork(d);
-		     } } else {
-		    	 System.out.println("Forgot to time out!"); 
-		    	// p.addToTimeAtWork(BigDecimal.valueOf(0));
-		     }
-		    
-		     p.getArriveLeave().add((date.toString()).substring(0,20));
+		      
+		     } 
+		     } 
+		     
+		    p.getArriveLeave().add((date.toString()).substring(0,20));
 		} 
 } 
 		public void convertTimeAtWorkToHour() {
@@ -305,7 +321,7 @@ public class Timer {
 			System.out.println("--------------------------------------------------------- ");
 			 System.out.println(" Name: " + p.getName());
 			 System.out.println("                    T I M E      C A R D ");
-			// System.out.println(String.format(" %20s", nameYear ));
+			
 			 System.out.println("      --Arrive--            |            --Leave--");
 			for(int i = 0; i< (p.getArriveLeave()).size(); i +=2) {
 				System.out.println(String.format(" %2s         %4s",(p.getArriveLeave()).get(i),(p.getArriveLeave()).get(i +1)));
@@ -321,8 +337,7 @@ public class Timer {
 				}
 		}
 		public void deserializePerson() {
-			//ArrayList<Product> products = new ArrayList<Product>();
-
+			
 			try (FileInputStream fis = new FileInputStream("C:\\Users\\rvuy6\\OneDrive\\Documents\\SerializePerson.txt");
 			     ObjectInputStream ois = new ObjectInputStream(fis)) {
 			  ArrayList<Person> deserializedPerson = (ArrayList<Person>) ois.readObject();
@@ -332,9 +347,9 @@ public class Timer {
 			} catch (EOFException e) {
 				  System.out.println("Reached end of file.");
 			} catch (IOException | ClassNotFoundException e) { 
-			  e.printStackTrace();
+			  e.printStackTrace(); 
 			}
-		}
+		} 
 		public void printAdminUse() { 
 			System.out.println("");
 			System.out.println(" 100  -  To add to an employee more time working on this day(in case of time card error).");
@@ -355,7 +370,7 @@ public class Timer {
 			System.out.println(" 113  -  To set time 8:15 for Time In of an employee.");
 			System.out.println(" 114  -  To set to zero the absences for all employee.");
 			System.out.println(" 115  -  To set to zero the tardiness for all employee.");
-			System.out.println(" 116  -  To clear the Timecard all employee.");
+			System.out.println(" 116  -  To clear the Timecard all employee."); 
 			System.out.println(" 117  -  To clear the Timecard of an employee.");
 			System.out.println(" 118  -  To set Time At Work to Zero for all employees.");
 			System.out.println(" 119  -  To set Time At Work to Zero for an employee.");

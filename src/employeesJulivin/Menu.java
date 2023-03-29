@@ -58,14 +58,14 @@ import java.util.Scanner;
 			     } 
 	          }
 	       }
-	          else if (choice == 2) {
+	          else if (choice == 2) { 
 	        	  boolean yes = true;
 	        	  while(yes) {
 	        	 try {
 	        	  System.out.println("Please enter your ID.");
 	        	  int ID = getNextIntFromUser();
 	        	  timer.timeOutTimeElapsed(ID);
-	        	  System.out.println("Done.You have just time out");
+	        	  System.out.println("Done.You have just time out"); 
 	        	  choice = getNextIntFromUser();
 	        	  yes = false;
 	          } catch(Exception e)
@@ -81,7 +81,7 @@ import java.util.Scanner;
 	          else if (choice == 4) {
 	        	  //boolean yes = true;
 	        	 // while(yes) {
-	        	  try {
+	        	  try { 
 	        	  System.out.println("Please enter your ID.");
 	        	  int ID = getNextIntFromUser();
 	        	 
@@ -253,7 +253,7 @@ import java.util.Scanner;
 	    		   choice = getNextIntFromUser();
 	    		   } catch(Exception e)
 	 		      {System.out.println("Invalid input.");
-	 		     scanner.next();
+	 		     scanner.next(); 
 	 		     } 
 	    	   }
 	    	   else if (choice == 113) {
@@ -313,13 +313,21 @@ import java.util.Scanner;
  	  		     scanner.next();
  	  		      }
    		       }
-   		    
+   		    else if (choice == 120) {
+   		    	timer.setSdfAllToZero();
+   		     System.out.println("Done. You have just erase the salary deduction factor of all employee." );
+   		     choice = getNextIntFromUser();
+   		    } 
+   		 else if (choice == 121) {
+	          timer.printLocalTimeIn();
+	          choice = getNextIntFromUser();
+   		 }
 	    	   else if (choice == 1000) {
 	    		   timer.printAdminUse();
 	    		   choice = getNextIntFromUser();
 	    	   }
-	    	   else if ((choice < 0 || choice > 5)&& !(choice < 100 && choice > 119) && !(choice ==1000)){
-	    		   System.out.println("Invalid input.");
+	    	   else if ((choice < 0 || choice > 5)&& (!(choice < 100) && !(choice > 121)) && !(choice ==1000)){
+	    		   System.out.println("Invalid input..");
 	    	   }
 	       if (choice == 0) {
 	       exit(); 
@@ -355,7 +363,7 @@ import java.util.Scanner;
            String s = String.format("%d: %s", v.getId(), v.getDisplayValue());
            System.out.println(s);
 	       
-	        }
+	        } 
 	        
 	    } 
 	private int getNextIntFromUser() {
@@ -370,11 +378,5 @@ import java.util.Scanner;
 		 return scanner.nextBigDecimal();
 	 }
 	
-	/* private Instant getNextInstantFromUser() {
-		 //Scanner scanner = new Scanner(System.in);
-		// System.out.print("Enter a date and time (in ISO-8601 format "2023-02-21T16:30:00Z"): ");
-		 String input = scanner.nextLine();
-		 Instant instant = Instant.parse(input);
-   return instant;
-	 }*/
+	
 }
