@@ -5,11 +5,11 @@ import java.math.BigDecimal;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Scanner;
-
+ 
 public class EmployeeTimer {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub  
 
 		
 		ArrayList<Person> person = new ArrayList<Person>();
@@ -34,13 +34,14 @@ person.add(new Person(18, "Carlo",BigDecimal.valueOf(0),BigDecimal.valueOf(0),(0
 
 
 
- 
+   
 
 
 Timer timer = new Timer("shopName", person);
 	Menu menu = new Menu(new Scanner(new InputStreamReader(System.in, Charset.forName("UTF-8"))),timer);
-
+	
 	menu.greet();
 	menu.executeMenu();     
 	} 	
-}
+} 
+  

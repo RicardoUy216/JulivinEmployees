@@ -15,7 +15,7 @@ public class Person implements Serializable {
     private int absences;
     private int tardiness;
     private LocalTime timeIn;
-	private Instant start;
+	private Instant start; 
     private Instant end;      
     private ArrayList<String> arriveLeave;
 	private String dayOff;
@@ -33,13 +33,13 @@ public class Person implements Serializable {
 		this.absences = absences;
 		this.tardiness = tardiness;
 		this.start = start;
-		this.end = end;
+		this.end = end;  
 		this.arriveLeave= arriveLeave;  
 		this.dayOff = dayOff; 
 		this.totalTimeToWork = totalTimeToWork;
 		this.sdf = sdf;
-	}
-	public BigDecimal getSdf() {
+	}  
+	public BigDecimal getSdf() { 
 		return sdf;
 	}
 	public void setSdf(BigDecimal sdf) {
@@ -72,7 +72,7 @@ public class Person implements Serializable {
 			this.timeAtWork = timeAtWork;  
 		}
           public int getId() {
-			return id;
+			return id; 
 		}
 		public void setId(int id) { 
 			this.id = id;

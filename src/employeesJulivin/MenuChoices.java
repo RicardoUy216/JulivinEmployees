@@ -16,7 +16,7 @@ private String displayValue;
 private MenuChoices(int id, String displayValue){ 
 this.id = id;    
 this.displayValue = displayValue; 
-}   
+}    
 public int getId() { 
    return this.id;     
 }
@@ -24,13 +24,13 @@ public String getDisplayValue() {
    return this.displayValue;    
 }
 public static MenuChoices fromOptionId(int optionId){
-   for (MenuChoices value : values()) {
-	   if (optionId == value.getId()) { 
+   for (MenuChoices value : values()) { 
+	   if (optionId == value.getId()) {  
 	   return value;
 	   
    } 
 } 
       return null;
    
-}
+} 
 }
